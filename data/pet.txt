@@ -23,7 +23,7 @@
       "id": 1,
       "name": "Dogs"
     },
-    "name": "doggie",
+    "name": "puppers",
     "photoUrls": [
       "string"
     ],

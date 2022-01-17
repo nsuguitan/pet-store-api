@@ -11,7 +11,16 @@ def hello():
 def pet_records():
     if request.method == 'PUT':
         # Update an existing pet
-        return 1
+        #Get record from the request
+        record = json.loads(request.data)
+        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+            data = f.read()
+        records = json.loads(data)
+        for item in records:
+                #print("Item:",item['id'])
+                #print("record:",record['id'])
+                if item['id'] == record['id']:
+                    item.update(record)
     if request.method == 'POST':
         #Add new record
         #Get new record from the request
@@ -33,10 +42,11 @@ def pet_records():
                 if item['id'] == record['id']:
                     return 'That pet is already in the system dummy!'
             records.append(record)
-        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
-            #update the file
-            f.write(json.dumps(records, indent=2))
+    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+        #update the file
+        f.write(json.dumps(records, indent=2))
         return jsonify(record)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
