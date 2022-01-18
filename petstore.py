@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import json
-import pandas as pd
+#import pandas as pd
+from PIL import Image as PImage
+import os
 
 app = Flask(__name__)
 @app.route('/')
@@ -47,6 +49,28 @@ def pet_records():
         f.write(json.dumps(records, indent=2))
         return jsonify(record)
 
-
+@app.route('/pet/<id>/uploadImage', methods = ['POST']) 
+def pet_image(id):
+    record = json.loads(request.data)
+    pet_id = id
+    additional_metadata = record['additionalMetadata']
+    img  = PImage.open(record['file'])
+    head, tail = os.path.split(record['file'])
+    destination = os.getcwd()+'/data/photos/'+ tail
+    img.save(destination, 'JPEG')
+    try:
+        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+            data = f.read()
+            records = json.loads(data)
+            for item in records:
+                    print("Item:",item['id'])
+                    print("PetId:", pet_id)
+                    print(int(pet_id) == int(item['id']))
+                    if int(item['id']) == int(pet_id):
+                        item['photoUrls'].append(destination)
+                        return jsonify(item)
+    except ValueError:
+        return 'A pet with this ID does not exist in our database, please try a different ID'
+    
 if __name__ == "__main__":
     app.run(debug=True)
