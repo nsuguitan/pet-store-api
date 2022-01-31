@@ -1,13 +1,14 @@
 [
   {
-    "id": 11,
+    "id": 10,
     "category": {
       "id": 1,
       "name": "Dogs"
     },
-    "name": "doggie",
+    "name": "puppers",
     "photoUrls": [
-      "string"
+      "string",
+      "/Users/nsuguitan/git/pet-store-api/data/photos/pomeranian-puppy.jpeg"
     ],
     "tags": [
       {
@@ -18,15 +19,14 @@
     "status": "available"
   },
   {
-    "id": 10,
+    "id": 11,
     "category": {
       "id": 1,
       "name": "Dogs"
     },
-    "name": "puppers",
+    "name": "doggie",
     "photoUrls": [
-      "string",
-      "/Users/nsuguitan/git/pet-store-api/data/photos/pomeranian-puppy.jpeg"
+      "string"
     ],
     "tags": [
       {

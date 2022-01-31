@@ -79,7 +79,10 @@ def pet_delete(id):
     with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
             data = f.read()
             records = json.loads(data)
-            records = filter(lambda x: x['id'] != id, records)
+            #records = [x for x in records if int(x['id']) != int(id)]
+            #filter applied to remove pet with ID given
+            records = list(filter(lambda x: int(x['id']) != int(id), records))
+    #overwrite existing file with record removed
     with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
             f.write(json.dumps(records, indent=2))
             return "Deletion of ped id:" + str(id)
