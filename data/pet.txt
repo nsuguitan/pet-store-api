@@ -25,7 +25,8 @@
     },
     "name": "puppers",
     "photoUrls": [
-      "string"
+      "string",
+      "/Users/nsuguitan/git/pet-store-api/data/photos/pomeranian-puppy.jpeg"
     ],
     "tags": [
       {

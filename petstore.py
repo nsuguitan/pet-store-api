@@ -68,9 +68,20 @@ def pet_image(id):
                     print(int(pet_id) == int(item['id']))
                     if int(item['id']) == int(pet_id):
                         item['photoUrls'].append(destination)
-                        return jsonify(item)
+                        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+                            f.write(json.dumps(records, indent=2))
+                            return jsonify(records)
     except ValueError:
         return 'A pet with this ID does not exist in our database, please try a different ID'
-    
+
+@app.route('/pet/<id>', methods = ['DELETE']) 
+def pet_delete(id):
+    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+            data = f.read()
+            records = json.loads(data)
+            records = filter(lambda x: x['id'] != id, records)
+    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+            f.write(json.dumps(records, indent=2))
+            return "Deletion of ped id:" + str(id)
 if __name__ == "__main__":
     app.run(debug=True)
