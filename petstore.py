@@ -5,6 +5,7 @@ from PIL import Image as PImage
 import os
 
 app = Flask(__name__)
+pet_db = '/Users/nsuguitan/git/pet-store-api/data/pet.txt'
 @app.route('/')
 def hello():
     return 'Hello Cool Cat!'
@@ -15,7 +16,7 @@ def pet_records():
         # Update an existing pet
         #Get record from the request
         record = json.loads(request.data)
-        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+        with open(pet_db, 'r') as f:
             data = f.read()
         records = json.loads(data)
         for item in records:
@@ -28,7 +29,7 @@ def pet_records():
         #Get new record from the request
         record = json.loads(request.data)
         #read data from txt file
-        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+        with open(pet_db, 'r') as f:
             data = f.read()
         if not data:
             #If there is no data in the file, this is the first record
@@ -44,7 +45,7 @@ def pet_records():
                 if item['id'] == record['id']:
                     return 'That pet is already in the system dummy!'
             records.append(record)
-    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+    with open(pet_db, 'w') as f:
         #update the file
         f.write(json.dumps(records, indent=2))
         return jsonify(record)
@@ -59,7 +60,7 @@ def pet_image(id):
     destination = os.getcwd()+'/data/photos/'+ tail
     img.save(destination, 'JPEG')
     try:
-        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+        with open(pet_db, 'r') as f:
             data = f.read()
             records = json.loads(data)
             for item in records:
@@ -68,7 +69,7 @@ def pet_image(id):
                     print(int(pet_id) == int(item['id']))
                     if int(item['id']) == int(pet_id):
                         item['photoUrls'].append(destination)
-                        with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+                        with open(pet_db, 'w') as f:
                             f.write(json.dumps(records, indent=2))
                             return jsonify(records)
     except ValueError:
@@ -76,14 +77,14 @@ def pet_image(id):
 
 @app.route('/pet/<id>', methods = ['DELETE']) 
 def pet_delete(id):
-    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'r') as f:
+    with open(pet_db, 'r') as f:
             data = f.read()
             records = json.loads(data)
             #records = [x for x in records if int(x['id']) != int(id)]
             #filter applied to remove pet with ID given
             records = list(filter(lambda x: int(x['id']) != int(id), records))
     #overwrite existing file with record removed
-    with open('/Users/nsuguitan/git/pet-store-api/data/pet.txt', 'w') as f:
+    with open(pet_db, 'w') as f:
             f.write(json.dumps(records, indent=2))
             return "Deletion of ped id:" + str(id)
 if __name__ == "__main__":
